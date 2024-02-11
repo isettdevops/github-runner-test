@@ -1,0 +1,44 @@
+# memos deployment with 3 replicas and PVC (persistant volume claim in Longhorn)
+# kubectl create namespace memos
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memos
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: memos
+  template:
+    metadata:
+      labels:
+        app: memos
+    spec:
+      containers:
+        - name: memos
+          image: neosmemo/memos:stable
+          ports:
+            - name: http
+              containerPort: 5230
+          volumeMounts:
+            - mountPath: /etc/pihole
+              name: memos-data
+      volumes:
+        - name: memos-data
+          persistentVolumeClaim:
+            claimName: memos-pvc # Name of the Persistent Volume Claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memos-svc
+spec:
+  type: NodePort
+  selector:
+    app: memos
+  ports:
+    - protocol: TCP
+      port: 5230
+      targetPort: 5230
+      # nodePort: 30013
