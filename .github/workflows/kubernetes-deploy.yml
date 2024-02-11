@@ -17,7 +17,7 @@ jobs:
       - name: Deploy App(Deployment)
         uses: actions-hub/kubectl@master
         with:
-          args: apply -f kubernetes/memos-deployment.yml
+          args: apply -f kubernetes/nginx-deployment.yml
           
       # - name: Deploy Service
       #   uses: actions-hub/kubectl@master

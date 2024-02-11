@@ -1,0 +1,24 @@
+# kubectl apply -f nginx-deployment.yaml -n default
+# kubectl expose deployment nginx-1 --port=80 --type=LoadBalancer -n default
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-2
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
